@@ -30,7 +30,20 @@
                                     <div class="page-wrapper">
 
                                         <div class="page-body">
-                                           <?php include('views/dashboard-view.php')?>
+                                        <?php
+                                                    if($views){
+                                                        if($views=="dashboard"){
+                                                            include("views/dashboard-view.php");
+                                                        }elseif($views == "add-cat"){
+                                                            include("views/add-category-view.php");
+                                                        }elseif($views == "manage-cat"){
+                                                            include("views/manage-category-view.php");
+                                                        }elseif($views == "add-product"){
+                                                            include("views/add-product-view.php");
+                                                        }elseif($views == "manage-product"){
+                                                            include("views/manage-product-view.php");}
+                                                        }
+                                                            ?>
                                         </div>
 
                                         <div id="styleSelector">
