@@ -51,11 +51,13 @@ class adminBack
     }
 
 
-    function add_category($data)
+    function add_category($data) //taking the data from add category dashboard and updating category database
     {
         $ctg_name = $data['ctg_name'];
         $ctg_des = $data['ctg_des'];
         $ctg_status = $data['ctg_status'];
+
+        //taking the values in variable and running the query
 
         $query = "INSERT INTO category(ctg_name,ctg_des,ctg_status) VALUE('$ctg_name','$ctg_des',$ctg_status)";
 
@@ -65,6 +67,15 @@ class adminBack
         } else {
             $message = "Category Not Added";
             return $message;
+        }
+    }
+
+    function display_category()
+    {
+        $query = "SELECT * FROM category";
+        if (mysqli_query($this->conn, $query)) {
+            $return_ctg = mysqli_query($this->conn, $query);//the variable has all the information about category table
+            return $return_ctg;
         }
     }
 }
