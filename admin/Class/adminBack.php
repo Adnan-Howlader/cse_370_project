@@ -49,4 +49,22 @@ class adminBack
         unset($_SESSION['adminPass']);
         header('location:index.php');
     }
+
+
+    function add_category($data)
+    {
+        $ctg_name = $data['ctg_name'];
+        $ctg_des = $data['ctg_des'];
+        $ctg_status = $data['ctg_status'];
+
+        $query = "INSERT INTO category(ctg_name,ctg_des,ctg_status) VALUE('$ctg_name','$ctg_des',$ctg_status)";
+
+        if (mysqli_query($this->conn, $query)) {
+            $message = "Category Added Successfully.";
+            return $message;
+        } else {
+            $message = "Category Not Added";
+            return $message;
+        }
+    }
 }
