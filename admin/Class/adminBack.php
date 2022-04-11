@@ -53,6 +53,7 @@ class adminBack
 
     function add_category($data) //taking the data from add category dashboard and updating category database
     {
+
         $ctg_name = $data['ctg_name'];
         $ctg_des = $data['ctg_des'];
         $ctg_status = $data['ctg_status'];
@@ -74,8 +75,17 @@ class adminBack
     {
         $query = "SELECT * FROM category";
         if (mysqli_query($this->conn, $query)) {
-            $return_ctg = mysqli_query($this->conn, $query);//the variable has all the information about category table
+            $return_ctg = mysqli_query($this->conn, $query); //the variable has all the information about category table
             return $return_ctg;
         }
+    }
+
+    function publish_category($id){//functions and sql to change pubish or uplish status from manage-category using id of the object and updating database
+        $query = "UPDATE category SET ctg_status=1 WHERE ctg_id=$id"; 
+        mysqli_query($this->conn, $query);
+    }
+    function unpublish_category($id){
+        $query = "UPDATE category SET ctg_status=0 WHERE ctg_id=$id";
+        mysqli_query($this->conn, $query);
     }
 }
