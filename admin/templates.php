@@ -3,10 +3,15 @@ include("Class/adminBack.php");
 session_start();
 $adminID = $_SESSION['id'];
 $adminEmail = $_SESSION['adminEmail'];
-if ($adminID == null) {
+if ($adminID == null) { //not letting to dashboard without login
     header('location:index.php');
 }
-//not letting to dashboard without login
+
+if (isset($_GET['adminLogout'])) {//if user logsout
+    $obj_adminback = new adminBack();//create adminback object
+    $obj_adminback->adminLogout();//call the adminLogout function
+}
+
 
 
 ?>
