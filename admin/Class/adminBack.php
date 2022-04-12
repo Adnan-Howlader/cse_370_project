@@ -88,4 +88,14 @@ class adminBack
         $query = "UPDATE category SET ctg_status=0 WHERE ctg_id=$id";
         mysqli_query($this->conn, $query);
     }
+    function delete_category($id){
+        $query = "DELETE FROM category WHERE ctg_id=$id";
+        if(mysqli_query($this->conn, $query)){
+            $msg = "Category Deleted Successfully";
+            return $msg;
+        }
+    }
+
+
+
 }

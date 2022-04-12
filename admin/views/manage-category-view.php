@@ -2,15 +2,20 @@
 $obj_adminBack = new adminBack();
 $ctg_data = $obj_adminBack->display_category();
 
-if(isset($_GET['status'])){
+if (isset($_GET['status'])) {
     $get_id = $_GET['id'];
 
-    if($_GET['status']=='publish'){
+    if ($_GET['status'] == 'publish') {
         $obj_adminBack->publish_category($get_id);
-    }elseif($_GET['status']=='unpublish'){
+    } elseif ($_GET['status'] == 'unpublish') {
         $obj_adminBack->unpublish_category($get_id);
     }
-
+    elseif ($_GET['status'] == 'delete') {
+        $msg = $obj_adminBack->delete_category($get_id);
+    }
+    
+    
+    
 }
 
 
@@ -64,7 +69,7 @@ if(isset($_GET['status'])){
                 </td>
                 <td>
                     <a href="">Update</a>
-                    <a href="">Delete</a>
+                    <a href="?status=delete&&id=<?php echo $ctg['ctg_id']; ?>">Delete</a>
                 </td>
 
             </tr>
