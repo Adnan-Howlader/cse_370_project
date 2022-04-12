@@ -7,9 +7,9 @@ if ($adminID == null) { //not letting to dashboard without login
     header('location:index.php');
 }
 
-if (isset($_GET['adminLogout'])) {//if user logsout
-    $obj_adminback = new adminBack();//create adminback object
-    $obj_adminback->adminLogout();//call the adminLogout function
+if (isset($_GET['adminLogout'])) { //if user logsout
+    $obj_adminback = new adminBack(); //create adminback object
+    $obj_adminback->adminLogout(); //call the adminLogout function
 }
 
 
@@ -60,6 +60,8 @@ if (isset($_GET['adminLogout'])) {//if user logsout
                                                     include("views/add-product-view.php");
                                                 } elseif ($views == "manage-product") {
                                                     include("views/manage-product-view.php");
+                                                } elseif ($views == "edit-cat") {
+                                                    include("views/edit_cat_view.php");
                                                 }
                                             }
                                             ?>
