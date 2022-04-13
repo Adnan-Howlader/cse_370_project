@@ -161,4 +161,21 @@ class adminBack
             return $msg;
         }
     }
+
+    function display_product(){//display product info to manage-product-view
+        $query = "SELECT * FROM product_info_ctg";
+        if(mysqli_query($this->conn, $query)){
+            $product = mysqli_query($this->conn, $query);
+            return $product;
+        }
+    }
+
+    function delete_product($id){//fumctopm tp delete product from manage-product-view
+        $query = "DELETE FROM products WHERE pdt_id=$id";
+        if(mysqli_query($this->conn, $query)){
+            $msg = "Product Deleted Successfully!";
+            return $msg;
+        }
+    }
+
 }
