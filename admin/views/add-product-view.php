@@ -1,14 +1,20 @@
-<?php 
-    $obj_adminBack = new adminBack();
-    $ctg_info = $obj_adminBack->p_display_category();
-    if(isset($_POST['pdt_btn'])){
-        $return_msg = $obj_adminBack->add_product($_POST);
-    }
-    
+<?php
+$obj_adminBack = new adminBack();
+$ctg_info = $obj_adminBack->p_display_category();
+if (isset($_POST['pdt_btn'])) {
+    $return_msg = $obj_adminBack->add_product($_POST);
+}
+
 ?>
 
 
 <h2>add-product</h2>
+
+<?php
+if (isset($return_msg)) {
+    echo $return_msg;
+}
+?>
 
 <form class="form" action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
@@ -27,11 +33,11 @@
         <label for="pdt_ctg">Product Category</label>
         <select name="pdt_ctg" class="form-control">
             <option>Please Select a Category</option>
-            <?php 
-                while($ctg= mysqli_fetch_assoc($ctg_info)){
-                
+            <?php
+            while ($ctg = mysqli_fetch_assoc($ctg_info)) {
+
             ?>
-            <option value="<?php echo $ctg['ctg_id']; ?>"><?php echo $ctg['ctg_name']; ?></option>
+                <option value="<?php echo $ctg['ctg_id']; ?>"><?php echo $ctg['ctg_name']; ?></option>
             <?php } ?>
         </select>
     </div>
