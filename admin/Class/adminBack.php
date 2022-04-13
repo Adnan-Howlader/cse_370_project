@@ -80,47 +80,85 @@ class adminBack
         }
     }
 
-    function publish_category($id){//functions and sql to change pubish or uplish status from manage-category using id of the object and updating database
-        $query = "UPDATE category SET ctg_status=1 WHERE ctg_id=$id"; 
+    function publish_category($id)
+    { //functions and sql to change pubish or uplish status from manage-category using id of the object and updating database
+        $query = "UPDATE category SET ctg_status=1 WHERE ctg_id=$id";
         mysqli_query($this->conn, $query);
     }
-    function unpublish_category($id){
+    function unpublish_category($id)
+    {
         $query = "UPDATE category SET ctg_status=0 WHERE ctg_id=$id";
         mysqli_query($this->conn, $query);
     }
-    function delete_category($id){ //delete the category from database
+    function delete_category($id)
+    { //delete the category from database
         $query = "DELETE FROM category WHERE ctg_id=$id";
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $msg = "Category Deleted Successfully";
             return $msg;
         }
     }
-    function getCatinfo_toupdate($id){
+    function getCatinfo_toupdate($id)
+    {
         $query = "SELECT * FROM category WHERE ctg_id=$id";
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $cat_info = mysqli_query($this->conn, $query);
             $ct_info = mysqli_fetch_assoc($cat_info);
             return $ct_info;
         }
     }
 
-    function update_category($receive_data){
+    function update_category($receive_data)
+    {
         $ctg_name = $receive_data['u_ctg_name'];
         $ctg_des = $receive_data['u_ctg_des'];
         $ctg_id = $receive_data['u_ctg_id'];
 
         $query = "UPDATE category SET ctg_name='$ctg_name',ctg_des='$ctg_des' WHERE ctg_id=$ctg_id";
 
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $return_msg = "Category Updated Successfully!";
             return $return_msg;
         }
-        
-
     }
 
-    
+    function p_display_category()//show the published category in add product settings in admin
+    {
+        $query = "SELECT * FROM category WHERE ctg_status=1";
+        if (mysqli_query($this->conn, $query)) {
+            $return_ctg = mysqli_query($this->conn, $query);
+            return $return_ctg;
+        }
+    }
 
+    function add_product($data)//add the product in database
+    {
+        $pdt_name = $data['pdt_name'];
+        $pdt_price = $data['pdt_price'];
+        $pdt_des = $data['pdt_des'];
+        $pdt_ctg = $data['pdt_ctg'];
+        $pdt_img_name = $_FILES['pdt_image']['name'];
+        $pdt_img_size = $_FILES['pdt_image']['size'];
+        $pdt_tmp_name = $_FILES['pdt_image']['tmp_name'];
+        $pdt_ext = pathinfo($pdt_img_name, PATHINFO_EXTENSION);
 
+        $pdt_status = $data['pdt_status'];
 
+        if ($pdt_ext == 'jpg' or $pdt_ext == 'png' or $pdt_ext == 'jpeg') {
+            if ($pdt_img_size <= 2097152) {
+                $query = "INSERT INTO products(pdt_name,pdt_price,pdt_des,pdt_ctg,pdt_img,pdt_status) VALUE('$pdt_name',$pdt_price,'$pdt_des',$pdt_ctg,'$pdt_img_name',$pdt_status)";
+
+                if (mysqli_query($this->conn, $query)) {
+                    move_uploaded_file($pdt_tmp_name, 'upload/' . $pdt_img_name);
+                    $msg = "Product Added Successfully!";
+                    return $msg;
+                }
+            } else {
+                $msg = "Your File Size Should Be Less or Equal 2 MB!";
+            }
+        } else {
+            $msg = "Your File Must Be a JPG or PNG File!";
+            return $msg;
+        }
+    }
 }
