@@ -63,6 +63,11 @@ if (isset($_GET['adminLogout'])) { //if user logsout
                                                 } elseif ($views == "edit-cat") {
                                                     include("views/edit_cat_view.php");
                                                 }
+                                                elseif($views == "edit-product"){
+                                                    include("views/edit_product_view.php");
+                                                }
+
+                                                
                                             }
                                             ?>
                                         </div>
