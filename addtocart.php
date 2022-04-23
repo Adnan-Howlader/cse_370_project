@@ -36,11 +36,11 @@ if (isset($_POST['addtocart'])) {
         );
     }
 }
-if(isset($_POST['remove_product'])){
-    foreach($_SESSION['cart'] as $key => $value){
-        if($value['pdt_name']== $_POST['remove_pdt_name']){
+if (isset($_POST['remove_product'])) {
+    foreach ($_SESSION['cart'] as $key => $value) {
+        if ($value['pdt_name'] == $_POST['remove_pdt_name']) {
             unset($_SESSION['cart'][$key]);
-            $_SESSION['cart']=array_values($_SESSION['cart']);
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
         }
     }
 }
@@ -86,40 +86,41 @@ if(isset($_POST['remove_product'])){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if(isset($_SESSION['cart'])){
+                                        <?php if (isset($_SESSION['cart'])) {
                                             $subtotal = 0;
                                             $total_product = 0;
                                             foreach ($_SESSION['cart'] as $key => $value) {
                                                 $subtotal = $subtotal + $value['pdt_price'];
                                                 $total_product++;
-                                             ?>
-                                            <tr class="cart_item">
-                                                <td class="product-thumbnail" data-title="Product Name">
-                                                    <a class="prd-thumb" href="#">
-                                                        <figure><img width="113" height="113" src="admin/upload/<?php echo $value['pdt_img']; ?>" alt="shipping cart"></figure>
-                                                    </a>
-                                                    <a class="prd-name" href="#"><?php echo $value['pdt_name']; ?></a>
-                                                </td>
-                                                <td class="product-price" data-title="Price">
-                                                    <div class="price price-contain">
-                                                        <ins><span class="price-amount"><span class="currencySymbol">£</span><?php echo $value['pdt_price']; ?></span></ins>
-                                                    </div>
-                                                </td>
-                                                <td class="product-quantity" data-title="Quantity">
-                                                    <form action="" method="POST">
-                                                        <input type="hidden" name="remove_pdt_name" value="<?php echo $value['pdt_name']; ?>">
-                                                        <input class="btn btn-warning" type="submit" value="Remove Product" name="remove_product">
-                                                    </form>
-                                                </td>
-                                                <td class="product-subtotal" data-title="Total">
-                                                    <div class="price price-contain">
-                                                        <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>
-                                                        <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        ?>
+                                                <tr class="cart_item">
+                                                    <td class="product-thumbnail" data-title="Product Name">
+                                                        <a class="prd-thumb" href="#">
+                                                            <figure><img width="113" height="113" src="admin/upload/<?php echo $value['pdt_img']; ?>" alt="shipping cart"></figure>
+                                                        </a>
+                                                        <a class="prd-name" href="#"><?php echo $value['pdt_name']; ?></a>
+                                                    </td>
+                                                    <td class="product-price" data-title="Price">
+                                                        <div class="price price-contain">
+                                                            <ins><span class="price-amount"><span class="currencySymbol">£</span><?php echo $value['pdt_price']; ?></span></ins>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-quantity" data-title="Quantity">
+                                                        <form action="" method="POST">
+                                                            <input type="hidden" name="remove_pdt_name" value="<?php echo $value['pdt_name']; ?>">
+                                                            <input class="btn btn-warning" type="submit" value="Remove Product" name="remove_product">
+                                                        </form>
+                                                    </td>
+                                                    <td class="product-subtotal" data-title="Total">
+                                                        <div class="price price-contain">
+                                                            <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>
+                                                            <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                                        <?php }}else{
+                                        <?php }
+                                        } else {
                                             echo "Your Cart is now empty!";
                                         } ?>
                                         <tr class="cart_item wrap-buttons">
@@ -136,7 +137,7 @@ if(isset($_POST['remove_product'])){
                         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                             <div class="shpcart-subtotal-block">
                                 <div class="subtotal-line">
-                                    <b class="stt-name">Subtotal <span class="sub">(<?php echo $total_product.'items'; ?>)</span></b>
+                                    <b class="stt-name">Subtotal <span class="sub">(<?php echo $total_product . 'items'; ?>)</span></b>
                                     <span class="stt-price">£<?php echo $subtotal; ?></span>
                                 </div>
                                 <div class="subtotal-line">

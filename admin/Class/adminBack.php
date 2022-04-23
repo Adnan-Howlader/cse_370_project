@@ -122,7 +122,7 @@ class adminBack
         }
     }
 
-    function p_display_category()//show the published category in add product settings in admin
+    function p_display_category() //show the published category in add product settings in admin
     {
         $query = "SELECT * FROM category WHERE ctg_status=1";
         if (mysqli_query($this->conn, $query)) {
@@ -131,7 +131,7 @@ class adminBack
         }
     }
 
-    function add_product($data)//add the product in database
+    function add_product($data) //add the product in database
     {
         $pdt_name = $data['pdt_name'];
         $pdt_price = $data['pdt_price'];
@@ -162,32 +162,36 @@ class adminBack
         }
     }
 
-    function display_product(){//display product info to manage-product-view
+    function display_product()
+    { //display product info to manage-product-view
         $query = "SELECT * FROM product_info_ctg";
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $product = mysqli_query($this->conn, $query);
             return $product;
         }
     }
 
-    function delete_product($id){//fumctopm tp delete product from manage-product-view
+    function delete_product($id)
+    { //fumctopm tp delete product from manage-product-view
         $query = "DELETE FROM products WHERE pdt_id=$id";
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $msg = "Product Deleted Successfully!";
             return $msg;
         }
     }
 
-    function getEditProduct_info($id){
+    function getEditProduct_info($id)
+    {
         $query = "SELECT * FROM product_info_ctg WHERE pdt_id=$id";
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $product_info = mysqli_query($this->conn, $query);
             $pdt_data = mysqli_fetch_assoc($product_info);
             return $pdt_data;
         }
     }
 
-    function update_product($data){
+    function update_product($data)
+    {
         $pdt_id = $data['u_pdt_id'];
         $pdt_name = $data['u_pdt_name'];
         $pdt_price = $data['u_pdt_price'];
@@ -200,84 +204,88 @@ class adminBack
 
         $pdt_status = $data['u_pdt_status'];
 
-        if($pdt_ext == 'jpg' or $pdt_ext== 'png' or $pdt_ext== 'jpeg'){
-            if($pdt_img_size <= 2097152){
-                $query= "UPDATE products SET pdt_name='$pdt_name',pdt_price=$pdt_price,pdt_des='$pdt_des',pdt_ctg=$pdt_ctg,pdt_img='$pdt_img_name',pdt_status=$pdt_status WHERE pdt_id=$pdt_id";
+        if ($pdt_ext == 'jpg' or $pdt_ext == 'png' or $pdt_ext == 'jpeg') {
+            if ($pdt_img_size <= 2097152) {
+                $query = "UPDATE products SET pdt_name='$pdt_name',pdt_price=$pdt_price,pdt_des='$pdt_des',pdt_ctg=$pdt_ctg,pdt_img='$pdt_img_name',pdt_status=$pdt_status WHERE pdt_id=$pdt_id";
 
-                if(mysqli_query($this->conn, $query)){
-                    move_uploaded_file($pdt_tmp_name,'upload/'.$pdt_img_name);
+                if (mysqli_query($this->conn, $query)) {
+                    move_uploaded_file($pdt_tmp_name, 'upload/' . $pdt_img_name);
                     $msg = "Product Updated Successfully!";
                     return $msg;
                 }
-            }else{
+            } else {
                 $msg = "Your File Size Should Be Less or Equal 2 MB!";
             }
-        }else{
+        } else {
             $msg = "Your File Must Be a JPG or PNG File!";
             return $msg;
         }
-
     }
 
-    function product_by_ctg($id){//in homepage when user clicks category the function shows all products by this category
+    function product_by_ctg($id)
+    { //in homepage when user clicks category the function shows all products by this category
         $query = "SELECT * FROM product_info_ctg WHERE ctg_id=$id";
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $proinfo = mysqli_query($this->conn, $query);
             return $proinfo;
         }
     }
 
-    function product_by_id($id){//shows individual product by id
+    function product_by_id($id)
+    { //shows individual product by id
         $query = "SELECT * FROM product_info_ctg WHERE pdt_id=$id";
-        if(mysqli_query($this->conn, $query)){
+        if (mysqli_query($this->conn, $query)) {
             $proinfo = mysqli_query($this->conn, $query);
             return $proinfo;
         }
     }
 
-    function related_product($id){
-        $query= "SELECT * FROM product_info_ctg WHERE ctg_id=$id ORDER BY pdt_id DESC LIMIT 1";
-        if(mysqli_query($this->conn, $query)){
+    function related_product($id)
+    {
+        $query = "SELECT * FROM product_info_ctg WHERE ctg_id=$id ORDER BY pdt_id DESC LIMIT 1";
+        if (mysqli_query($this->conn, $query)) {
             $proinfo = mysqli_query($this->conn, $query);
             return $proinfo;
         }
     }
 
-    function ctg_by_id($id){
-        $query= "SELECT * FROM product_info_ctg WHERE ctg_id=$id";
-        if(mysqli_query($this->conn, $query)){
+    function ctg_by_id($id)
+    {
+        $query = "SELECT * FROM product_info_ctg WHERE ctg_id=$id";
+        if (mysqli_query($this->conn, $query)) {
             $proinfo = mysqli_query($this->conn, $query);
             $ctg = mysqli_fetch_assoc($proinfo);
             return $ctg;
         }
     }
 
-    function user_login($data){
+    function user_login($data)
+    {
         $user_email = $data['user_email'];
         $user_pass = md5($data['user_pass']);
 
-        $query= "SELECT * FROM users WHERE user_email='$user_email' AND user_password='$user_pass'";
+        $query = "SELECT * FROM users WHERE user_email='$user_email' AND user_password='$user_pass'";
 
-        if(mysqli_query($this->conn,$query)){
-            $result = mysqli_query($this->conn,$query);
+        if (mysqli_query($this->conn, $query)) {
+            $result = mysqli_query($this->conn, $query);
             $user_info = mysqli_fetch_assoc($result);
 
-            if($user_info){
+            if ($user_info) {
                 header('location:user_profile.php');
                 session_start();
                 $_SESSION['user_id'] = $user_info['user_id'];
                 $_SESSION['email'] = $user_info['user_email'];
                 $_SESSION['user_pass'] = $user_info['user_password'];
                 $_SESSION['user_name'] = $user_info['user_name'];
-            }else{
+            } else {
                 $errmsg = "Your Email or Password is incorrect!";
                 return $errmsg;
             }
         }
-        
     }
 
-    function user_register($data){
+    function user_register($data)
+    {
         $username = $data['username'];
         $user_firstName = $data['user_firstName'];
         $user_lastName = $data['user_lastName'];
@@ -290,36 +298,30 @@ class adminBack
         $sent_data = mysqli_query($this->conn, $get_user_data);
         $row = mysqli_num_rows($sent_data);
 
-        if($row==1){
+        if ($row == 1) {
             $msg = "This Username or Email Already Exist!";
             return $msg;
-        }else{
-           if(strlen($user_mobile)< 11 or strlen($user_mobile)> 11){
-               $msg = "Your Mobile Number Should Not Be Less Than or Greater Then 11 Digit";
-               return $msg;
-           }else{
-            $query = "INSERT INTO users(user_name,user_firstname,user_lastname,user_email,user_password,user_mobile,user_roles) VALUE('$username','$user_firstName','$user_lastName','$useremail','$user_pass',$user_mobile,$user_roles)";
-
-            if(mysqli_query($this->conn, $query)){
-                $msg = "Your account successfully registered!";
+        } else {
+            if (strlen($user_mobile) < 11 or strlen($user_mobile) > 11) {
+                $msg = "Your Mobile Number Should Not Be Less Than or Greater Then 11 Digit";
                 return $msg;
-            }
-           }
-        }
+            } else {
+                $query = "INSERT INTO users(user_name,user_firstname,user_lastname,user_email,user_password,user_mobile,user_roles) VALUE('$username','$user_firstName','$user_lastName','$useremail','$user_pass',$user_mobile,$user_roles)";
 
-        
+                if (mysqli_query($this->conn, $query)) {
+                    $msg = "Your account successfully registered!";
+                    return $msg;
+                }
+            }
+        }
     }
 
-    function user_logout(){
-        unset($_SESSION['user_id'] );
+    function user_logout()
+    {
+        unset($_SESSION['user_id']);
         unset($_SESSION['email']);
         unset($_SESSION['user_pass']);
         unset($_SESSION['user_name']);
         header('location:user_login.php');
     }
-
-    
-
-
-
 }

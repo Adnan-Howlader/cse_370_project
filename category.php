@@ -1,5 +1,4 @@
 <?php
-session_start();
 include('admin/Class/adminBack.php');
 $obj = new adminBack();
 $ctg = $obj->p_display_category();
@@ -7,49 +6,22 @@ $ctgDatas = array();
 while ($data = mysqli_fetch_assoc($ctg)) {
     $ctgDatas[] = $data;
 }
-
-if (isset($_POST['addtocart'])) {
-    if (isset($_SESSION['cart'])) {
-        $products_name = array_column($_SESSION['cart'], 'pdt_name');
-        if (in_array($_POST['pdt_name'], $products_name)) {
-            echo "
-                <script>
-                    alert('This product already added!');
-                </script>
-            ";
-        } else {
-
-            $count = count($_SESSION['cart']);
-            $_SESSION['cart'][$count] = array(
-                'pdt_name' => $_POST['pdt_name'],
-                'pdt_price' => $_POST['pdt_price'],
-                'pdt_img' => $_POST['pdt_img'],
-                'quantity' => 1,
-            );
-        }
-    } else {
-        $_SESSION['cart'][0] = array(
-            'pdt_name' => $_POST['pdt_name'],
-            'pdt_price' => $_POST['pdt_price'],
-            'pdt_img' => $_POST['pdt_img'],
-            'quantity' => 1,
-        );
-    }
-}
-if (isset($_POST['remove_product'])) {
-    foreach ($_SESSION['cart'] as $key => $value) {
-        if ($value['pdt_name'] == $_POST['remove_pdt_name']) {
-            unset($_SESSION['cart'][$key]);
-            $_SESSION['cart'] = array_values($_SESSION['cart']);
+if (isset($_GET['status'])) {
+    $catID = $_GET['id'];
+    if ($_GET['status'] == 'catView') {
+        $prodata = $obj->product_by_ctg($catID);
+        $pros = array();
+        while ($prodatas = mysqli_fetch_assoc($prodata)) {
+            $pros[] = $prodatas;
         }
     }
 }
-
-
-
-
-
-
+if (isset($_GET['status'])) {
+    $catID = $_GET['id'];
+    if ($_GET['status'] == 'catView') {
+        $category_name = $obj->ctg_by_id($catID);
+    }
+}
 ?>
 
 <?php include_once('includes/head.php'); ?>
@@ -69,111 +41,90 @@ if (isset($_POST['remove_product'])) {
 
         <!-- Main content -->
         <div id="main-content" class="main-content">
-            <div class="container">
-                <br>
-                <div class="shopping-cart-container">
-                    <div class="row">
-                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                            <h3 class="box-title">Your cart items</h3>
-                            <form class="shopping-cart-form" action="#" method="post">
-                                <table class="shop_table cart-form">
-                                    <thead>
-                                        <tr>
-                                            <th class="product-name">Product Name</th>
-                                            <th class="product-price">Price</th>
-                                            <th class="product-quantity">Remove</th>
-                                            <th class="product-subtotal">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (isset($_SESSION['cart'])) {
-                                            $subtotal = 0;
-                                            $total_product = 0;
-                                            foreach ($_SESSION['cart'] as $key => $value) {
-                                                $subtotal = $subtotal + $value['pdt_price'];
-                                                $total_product++;
-                                        ?>
-                                                <tr class="cart_item">
-                                                    <td class="product-thumbnail" data-title="Product Name">
-                                                        <a class="prd-thumb" href="#">
-                                                            <figure><img width="113" height="113" src="admin/upload/<?php echo $value['pdt_img']; ?>" alt="shipping cart"></figure>
-                                                        </a>
-                                                        <a class="prd-name" href="#"><?php echo $value['pdt_name']; ?></a>
-                                                    </td>
-                                                    <td class="product-price" data-title="Price">
-                                                        <div class="price price-contain">
-                                                            <ins><span class="price-amount"><span class="currencySymbol">£</span><?php echo $value['pdt_price']; ?></span></ins>
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-quantity" data-title="Quantity">
-                                                        <form action="" method="POST">
-                                                            <input type="hidden" name="remove_pdt_name" value="<?php echo $value['pdt_name']; ?>">
-                                                            <input class="btn btn-warning" type="submit" value="Remove Product" name="remove_product">
-                                                        </form>
-                                                    </td>
-                                                    <td class="product-subtotal" data-title="Total">
-                                                        <div class="price price-contain">
-                                                            <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>
-                                                            <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
-                                                        </div>
-                                                    </td>
-                                                </tr>
 
-                                        <?php }
-                                        } else {
-                                            echo "Your Cart is now empty!";
-                                        } ?>
-                                        <tr class="cart_item wrap-buttons">
-                                            <td class="wrap-btn-control" colspan="4">
-                                                <a class="btn back-to-shop">Back to Shop</a>
-                                                <button class="btn btn-update" type="submit" disabled>update</button>
-                                                <button class="btn btn-clear" type="reset">clear all</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
-                        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                            <div class="shpcart-subtotal-block">
-                                <div class="subtotal-line">
-                                    <b class="stt-name">Subtotal <span class="sub">(<?php echo $total_product . 'items'; ?>)</span></b>
-                                    <span class="stt-price">£<?php echo $subtotal; ?></span>
+            <!--Hero Section-->
+            <div class="hero-section hero-background">
+                <h1 class="page-title">
+                    <?php echo $category_name['ctg_name']; ?>
+                </h1>
+            </div>
+
+            <!--Navigation section-->
+            <div class="container">
+                <nav class="biolife-nav">
+                    <ul>
+                        <li class="nav-item"><a href="index.php" class="permal-link">Home</a></li>
+                        <li class="nav-item"><span class="current-page">
+                                <?php echo $category_name['ctg_name']; ?>
+                            </span></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="container">
+                <div class="page-contain category-page no-sidebar">
+                    <div class="container">
+                        <div class="row">
+
+                            <!-- Main content -->
+                            <div id="main-content" class="main-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+                                <div class="product-category grid-style">
+
+
+                                    <div class="row">
+                                        <ul class="products-list">
+                                            <?php foreach ($pros as $pro) { ?>
+                                                <li class="product-item col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                                    <div class="contain-product layout-default">
+                                                        <div class="product-thumb">
+                                                            <a href="single_product.php?status=sigleproduct&&id=<?php echo $pro['pdt_id']; ?>" class="link-to-product">
+                                                                <img src="admin/upload/<?php echo $pro['pdt_img']; ?>" alt="dd" width="270" height="270" class="product-thumnail">
+                                                            </a>
+                                                        </div>
+                                                        <div class="info">
+                                                            <b class="categories"><?php echo $pro['ctg_name']; ?></b>
+                                                            <h4 class="product-title"><a href="single_product.php?status=sigleproduct&&id=<?php echo $pro['pdt_id']; ?>" class="pr-name"><?php echo $pro['pdt_name']; ?></a></h4>
+                                                            <div class="price">
+                                                                <ins><span class="price-amount"><span class="currencySymbol">£</span><?php echo $pro['pdt_price']; ?></span></ins>
+                                                            </div>
+                                                            <div class="shipping-info">
+                                                                <p class="shipping-day">3-Day Shipping</p>
+                                                                <p class="for-today">Free Pickup Today</p>
+                                                            </div>
+                                                            <div class="slide-down-box">
+                                                                <p class="message">All products are carefully selected to ensure food safety.</p>
+                                                                <div class="buttons">
+                                                                    <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                                                    <a href="#" class="btn add-to-cart-btn"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</a>
+                                                                    <a href="single_product.php?status=sigleproduct&&id=<?php echo $pro['pdt_id']; ?>" class="btn compare-btn"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            <?php } ?>
+                                        </ul>
+                                    </div>
+
+                                    <div class="biolife-panigations-block">
+                                        <ul class="panigation-contain">
+                                            <li><span class="current-page">1</span></li>
+                                            <li><a href="#" class="link-page">2</a></li>
+                                            <li><a href="#" class="link-page">3</a></li>
+                                            <li><span class="sep">....</span></li>
+                                            <li><a href="#" class="link-page">20</a></li>
+                                            <li><a href="#" class="link-page next"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                    </div>
+
                                 </div>
-                                <div class="subtotal-line">
-                                    <b class="stt-name">Shipping</b>
-                                    <span class="stt-price">£0.00</span>
-                                </div>
-                                <div class="tax-fee">
-                                    <p class="title">Est. Taxes & Fees</p>
-                                    <p class="desc">Based on 56789</p>
-                                </div>
-                                <div class="btn-checkout">
-                                    <a href="#" class="btn checkout">Check out</a>
-                                </div>
-                                <div class="biolife-progress-bar">
-                                    <table>
-                                        <tr>
-                                            <td class="first-position">
-                                                <span class="index">$0</span>
-                                            </td>
-                                            <td class="mid-position">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                            <td class="last-position">
-                                                <span class="index">$99</span>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <p class="pickup-info"><b>Free Pickup</b> is available as soon as today More about shipping and pickup</p>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
-                <br>
             </div>
         </div>
     </div>
