@@ -262,7 +262,7 @@ class adminBack
     function user_login($data)
     {
         $user_email = $data['user_email'];
-        $user_pass = md5($data['user_pass']);
+        $user_pass = $data['user_pass'];
 
         $query = "SELECT * FROM users WHERE user_email='$user_email' AND user_password='$user_pass'";
 
@@ -290,7 +290,7 @@ class adminBack
         $user_firstName = $data['user_firstName'];
         $user_lastName = $data['user_lastName'];
         $useremail = $data['useremail'];
-        $user_pass = md5($data['user_pass']);
+        $user_pass = $data['user_pass'];
         $user_mobile = $data['user_mobile'];
         $user_roles = $data['user_roles'];
 
@@ -324,4 +324,10 @@ class adminBack
         unset($_SESSION['user_name']);
         header('location:user_login.php');
     }
+
+   
+
+
+
+
 }

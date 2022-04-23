@@ -13,7 +13,7 @@ if(isset($_POST['user_login_btn'])){
 if(isset($_SESSION['user_id'])){
     $userid = $_SESSION['user_id'];
     if($userid){
-        header('location: user_profile.php');
+        header('location:user_profile.php');
     }
 }
 ?>
