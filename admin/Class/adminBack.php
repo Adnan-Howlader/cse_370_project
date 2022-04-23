@@ -219,6 +219,107 @@ class adminBack
 
     }
 
+    function product_by_ctg($id){//in homepage when user clicks category the function shows all products by this category
+        $query = "SELECT * FROM product_info_ctg WHERE ctg_id=$id";
+        if(mysqli_query($this->conn, $query)){
+            $proinfo = mysqli_query($this->conn, $query);
+            return $proinfo;
+        }
+    }
+
+    function product_by_id($id){//shows individual product by id
+        $query = "SELECT * FROM product_info_ctg WHERE pdt_id=$id";
+        if(mysqli_query($this->conn, $query)){
+            $proinfo = mysqli_query($this->conn, $query);
+            return $proinfo;
+        }
+    }
+
+    function related_product($id){
+        $query= "SELECT * FROM product_info_ctg WHERE ctg_id=$id ORDER BY pdt_id DESC LIMIT 1";
+        if(mysqli_query($this->conn, $query)){
+            $proinfo = mysqli_query($this->conn, $query);
+            return $proinfo;
+        }
+    }
+
+    function ctg_by_id($id){
+        $query= "SELECT * FROM product_info_ctg WHERE ctg_id=$id";
+        if(mysqli_query($this->conn, $query)){
+            $proinfo = mysqli_query($this->conn, $query);
+            $ctg = mysqli_fetch_assoc($proinfo);
+            return $ctg;
+        }
+    }
+
+    function user_login($data){
+        $user_email = $data['user_email'];
+        $user_pass = md5($data['user_pass']);
+
+        $query= "SELECT * FROM users WHERE user_email='$user_email' AND user_password='$user_pass'";
+
+        if(mysqli_query($this->conn,$query)){
+            $result = mysqli_query($this->conn,$query);
+            $user_info = mysqli_fetch_assoc($result);
+
+            if($user_info){
+                header('location:user_profile.php');
+                session_start();
+                $_SESSION['user_id'] = $user_info['user_id'];
+                $_SESSION['email'] = $user_info['user_email'];
+                $_SESSION['user_pass'] = $user_info['user_password'];
+                $_SESSION['user_name'] = $user_info['user_name'];
+            }else{
+                $errmsg = "Your Email or Password is incorrect!";
+                return $errmsg;
+            }
+        }
+        
+    }
+
+    function user_register($data){
+        $username = $data['username'];
+        $user_firstName = $data['user_firstName'];
+        $user_lastName = $data['user_lastName'];
+        $useremail = $data['useremail'];
+        $user_pass = md5($data['user_pass']);
+        $user_mobile = $data['user_mobile'];
+        $user_roles = $data['user_roles'];
+
+        $get_user_data = "SELECT * FROM users WHERE user_name= '$username' or user_email= '$useremail'";
+        $sent_data = mysqli_query($this->conn, $get_user_data);
+        $row = mysqli_num_rows($sent_data);
+
+        if($row==1){
+            $msg = "This Username or Email Already Exist!";
+            return $msg;
+        }else{
+           if(strlen($user_mobile)< 11 or strlen($user_mobile)> 11){
+               $msg = "Your Mobile Number Should Not Be Less Than or Greater Then 11 Digit";
+               return $msg;
+           }else{
+            $query = "INSERT INTO users(user_name,user_firstname,user_lastname,user_email,user_password,user_mobile,user_roles) VALUE('$username','$user_firstName','$user_lastName','$useremail','$user_pass',$user_mobile,$user_roles)";
+
+            if(mysqli_query($this->conn, $query)){
+                $msg = "Your account successfully registered!";
+                return $msg;
+            }
+           }
+        }
+
+        
+    }
+
+    function user_logout(){
+        unset($_SESSION['user_id'] );
+        unset($_SESSION['email']);
+        unset($_SESSION['user_pass']);
+        unset($_SESSION['user_name']);
+        header('location:user_login.php');
+    }
+
+    
+
 
 
 }
