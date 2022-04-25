@@ -11,7 +11,7 @@ while ($data = mysqli_fetch_assoc($ctg)) {
 if (isset($_POST['addtocart'])) {
     if (isset($_SESSION['cart'])) {
         $products_name = array_column($_SESSION['cart'], 'pdt_name');
-        if (in_array($_POST['pdt_name'], $products_name)) {
+        if (in_array($_POST['pdt_name'], $products_name)) { ##if the product is already in the array,,echo this msg
             echo "
                 <script>
                     alert('This product already added!');
@@ -36,7 +36,7 @@ if (isset($_POST['addtocart'])) {
         );
     }
 }
-if (isset($_POST['remove_product'])) {
+if (isset($_POST['remove_product'])) {//if remove is pressed,,remove it from cart
     foreach ($_SESSION['cart'] as $key => $value) {
         if ($value['pdt_name'] == $_POST['remove_pdt_name']) {
             unset($_SESSION['cart'][$key]);
@@ -89,7 +89,7 @@ if (isset($_POST['remove_product'])) {
                                         <?php if (isset($_SESSION['cart'])) {
                                             $subtotal = 0;
                                             $total_product = 0;
-                                            foreach ($_SESSION['cart'] as $key => $value) {
+                                            foreach ($_SESSION['cart'] as $key => $value) {// loop for total price
                                                 $subtotal = $subtotal + $value['pdt_price'];
                                                 $total_product++;
                                         ?>

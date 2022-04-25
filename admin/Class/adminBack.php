@@ -3,7 +3,7 @@ class adminBack
 {
     private $conn;
 
-    public function __construct()
+    public function __construct() ##connecting the database
     {
 
         $dbhost = "localhost";
@@ -24,7 +24,7 @@ class adminBack
         $admin_email = $data['admin_email']; //user inputting admin_email and pass
         $admin_pass = $data['admin_pass'];
 
-        $query = "select * from adminlog where admin_email='$admin_email' AND admin_pass=$admin_pass"; //checking if that email and pass exists in database
+        $query = "select * from adminlog where admin_email='$admin_email' AND admin_pass='$admin_pass'"; //checking if that email and pass exists in database
         if (mysqli_query($this->conn, $query)) { //ran the sql
             $result = mysqli_query($this->conn, $query);
             $admin_info = mysqli_fetch_assoc($result); //if data exist we can fetch it
@@ -324,10 +324,4 @@ class adminBack
         unset($_SESSION['user_name']);
         header('location:user_login.php');
     }
-
-   
-
-
-
-
 }

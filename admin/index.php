@@ -57,7 +57,7 @@ if (isset($_SESSION['id'])) {
                                             </div>
                                         </div>
                                         <div class="col-sm-5 col-xs-12 forgot-phone text-right">
-                                            <a href="auth-reset-password.html" class="text-right f-w-600 text-inverse"> Forgot Your Password?</a>
+                                            <a href="forget_pass.php" class="text-right f-w-600 text-inverse"> Forgot Your Password?</a>
                                         </div>
                                     </div>
                                     <div class="row m-t-30">
