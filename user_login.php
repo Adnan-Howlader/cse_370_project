@@ -55,7 +55,7 @@ if(isset($_SESSION['user_id'])){
                                 </p>
                                 <br>
                                 <input name="user_login_btn" value="Login" style="padding: 15px 30px;" class="btn btn-submit btn-bold" type="submit">
-                                <a href="user_password_recover.php" class="link-to-help">Forgot your password</a>
+                                <a href="user_forget_pass.php" class="link-to-help">Forgot your password</a>
                             </form>
                         </div>
                     </div>
