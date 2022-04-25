@@ -124,14 +124,14 @@ class adminBack
 
     function p_display_category() //show the published category in add product settings in admin
     {
-        $query = "SELECT * FROM category WHERE ctg_status=1";
+        $query = "SELECT * FROM category WHERE ctg_status=1";// show the published category
         if (mysqli_query($this->conn, $query)) {
             $return_ctg = mysqli_query($this->conn, $query);
             return $return_ctg;
         }
     }
 
-    function add_product($data) //add the product in database
+    function add_product($data) //add the product in database,,add-product-view php
     {
         $pdt_name = $data['pdt_name'];
         $pdt_price = $data['pdt_price'];
@@ -172,7 +172,7 @@ class adminBack
     }
 
     function delete_product($id)
-    { //fumctopm tp delete product from manage-product-view
+    { //function tp delete product from manage-product-view
         $query = "DELETE FROM products WHERE pdt_id=$id";
         if (mysqli_query($this->conn, $query)) {
             $msg = "Product Deleted Successfully!";
@@ -222,7 +222,7 @@ class adminBack
         }
     }
 
-    function product_by_ctg($id)
+    function product_by_ctg($id)//category php 
     { //in homepage when user clicks category the function shows all products by this category
         $query = "SELECT * FROM product_info_ctg WHERE ctg_id=$id";
         if (mysqli_query($this->conn, $query)) {
@@ -242,6 +242,7 @@ class adminBack
 
     function related_product($id)
     {
+        //shows same category product
         $query = "SELECT * FROM product_info_ctg WHERE ctg_id=$id ORDER BY pdt_id DESC LIMIT 1";
         if (mysqli_query($this->conn, $query)) {
             $proinfo = mysqli_query($this->conn, $query);
