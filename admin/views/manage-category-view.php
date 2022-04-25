@@ -2,11 +2,11 @@
 $obj_adminBack = new adminBack();
 $ctg_data = $obj_adminBack->display_category();
 
-if (isset($_GET['status'])) {
-    $get_id = $_GET['id'];
+if (isset($_GET['status'])) { //getting status value from form
+    $get_id = $_GET['id']; //getting the id
 
-    if ($_GET['status'] == 'publish') {
-        $obj_adminBack->publish_category($get_id);
+    if ($_GET['status'] == 'publish') {//if n the form user select published
+        $obj_adminBack->publish_category($get_id); //run the function in adminbackphp file
     } elseif ($_GET['status'] == 'unpublish') {
         $obj_adminBack->unpublish_category($get_id);
     }

@@ -51,7 +51,7 @@ class adminBack
     }
 
 
-    function add_category($data) //taking the data from add category dashboard and updating category database
+    function add_category($data) //taking the data from add category dashboard and updating category database,,uses add-cat.view php
     {
 
         $ctg_name = $data['ctg_name'];
@@ -71,7 +71,7 @@ class adminBack
         }
     }
 
-    function display_category()
+    function display_category() // from manage-category-view
     {
         $query = "SELECT * FROM category";
         if (mysqli_query($this->conn, $query)) {
@@ -80,17 +80,17 @@ class adminBack
         }
     }
 
-    function publish_category($id)
+    function publish_category($id) //from manage-category-view
     { //functions and sql to change pubish or uplish status from manage-category using id of the object and updating database
         $query = "UPDATE category SET ctg_status=1 WHERE ctg_id=$id";
         mysqli_query($this->conn, $query);
     }
-    function unpublish_category($id)
+    function unpublish_category($id) //from manage-category view
     {
         $query = "UPDATE category SET ctg_status=0 WHERE ctg_id=$id";
         mysqli_query($this->conn, $query);
     }
-    function delete_category($id)
+    function delete_category($id)//from manage-category view
     { //delete the category from database
         $query = "DELETE FROM category WHERE ctg_id=$id";
         if (mysqli_query($this->conn, $query)) {
@@ -98,7 +98,7 @@ class adminBack
             return $msg;
         }
     }
-    function getCatinfo_toupdate($id)
+    function getCatinfo_toupdate($id)//from edit-category view
     {
         $query = "SELECT * FROM category WHERE ctg_id=$id";
         if (mysqli_query($this->conn, $query)) {
@@ -108,7 +108,7 @@ class adminBack
         }
     }
 
-    function update_category($receive_data)
+    function update_category($receive_data)//edit_cat_view
     {
         $ctg_name = $receive_data['u_ctg_name'];
         $ctg_des = $receive_data['u_ctg_des'];
